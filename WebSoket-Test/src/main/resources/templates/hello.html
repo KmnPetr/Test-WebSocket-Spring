@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<h1>Hello</h1>
+<script>
+    const socket = new WebSocket("ws://localhost:8080/websocket");
+
+    socket.onopen = () => {
+        console.log("WebSocket соединение установлено.");
+        socket.send("Привет, сервер! Это клиент.");
+    };
+
+    socket.onmessage = (event) => {
+        console.log("Получено сообщение от сервера: " + event.data);
+    };
+
+    socket.onclose = () => {
+        console.log("WebSocket соединение закрыто.");
+    };
+
+    // Закрытие WebSocket соединения
+    socket.onclose = () => {
+        console.log("WebSocket соединение закрыто.");
+    };
+</script>
+</body>
+</html>
