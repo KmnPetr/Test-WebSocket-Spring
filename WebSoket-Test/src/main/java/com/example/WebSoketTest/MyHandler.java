@@ -1,10 +1,20 @@
 package com.example.WebSoketTest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
 import java.io.IOException;
 
+@Component
 public class MyHandler implements WebSocketHandler {
+
+    private SendingMessages sendingMessages;
+    @Autowired
+    public MyHandler(SendingMessages sendingMessages) {
+        this.sendingMessages = sendingMessages;
+    }
+
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -14,6 +24,8 @@ public class MyHandler implements WebSocketHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        sendingMessages.addSession(session);
     }
 
 
@@ -35,6 +47,8 @@ public class MyHandler implements WebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         System.out.println("WebSocket соединение закрыто: " + session.getId());
+
+        sendingMessages.removeSession(session);
     }
 
     @Override
